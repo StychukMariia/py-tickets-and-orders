@@ -69,7 +69,7 @@ class Order(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return str(self.created_at)
+        return self.created_at
 
 
 class Ticket(models.Model):
@@ -110,12 +110,12 @@ class Ticket(models.Model):
 
     def save(self) -> None:
         self.full_clean()
-        self.save()
+        super().save()
 
     def __str__(self) -> str:
         return (f"{self.movie_session.movie.title} "
                 f"{str(self.movie_session.show_time)} "
-                f"(rows: {self.row}, seats: {self.seat})")
+                f"(row: {self.row}, seat: {self.seat})")
 
 
 class User(AbstractUser):

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from db.models import User
 
 
-def creare_user(
+def create_user(
         username: str,
         password: str,
         email: str = None,
