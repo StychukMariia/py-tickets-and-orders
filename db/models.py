@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -69,7 +71,7 @@ class Order(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return self.created_at
+        return self.created_at.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class Ticket(models.Model):
@@ -110,7 +112,7 @@ class Ticket(models.Model):
 
     def save(self) -> None:
         self.full_clean()
-        super().save()
+        super().save(self)
 
     def __str__(self) -> str:
         return (f"{self.movie_session.movie.title} "

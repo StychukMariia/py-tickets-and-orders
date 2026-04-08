@@ -10,7 +10,7 @@ def create_order(
         username: str,
         date: str = None
 ) -> Order:
-    user = User.objects.filter(username=username)
+    user = User.objects.get(username=username)
     order = Order(user=user)
     if date:
         order.created_at = date
