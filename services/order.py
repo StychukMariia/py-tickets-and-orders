@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import QuerySet
@@ -13,7 +15,10 @@ def create_order(
 ) -> Order:
     user = get_user_model().objects.get(username=username)
     if date:
-        order = Order.objects.create(created_at=date, user=user)
+        order = Order.objects.create(
+            created_at=datetime.strptime(date, "%Y-%m-%d %H:%M"),
+            user=user
+        )
     else:
         order = Order.objects.create(user=user)
     for ticket in tickets:

@@ -1,9 +1,8 @@
-import datetime
-
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
+from django.utils import timezone
 
 import settings
 
@@ -60,7 +59,7 @@ class MovieSession(models.Model):
 
 
 class Order(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -98,13 +97,15 @@ class Ticket(models.Model):
 
     def clean(self) -> None:
         if not 1 <= self.seat <= self.movie_session.cinema_hall.seats_in_row:
-            raise ValidationError({"seat":
+            raise ValidationError({
+                "seat":
                 f"seat number must be in "
                 f"available range: (1, seats_in_row): (1, "
                 f"{self.movie_session.cinema_hall.seats_in_row})"
             })
         if not 1 <= self.row <= self.movie_session.cinema_hall.rows:
-            raise ValidationError({"row":
+            raise ValidationError({
+                "row":
                 f"row number must be in "
                 f"available range: (1, rows): (1, "
                 f"{self.movie_session.cinema_hall.rows})"
